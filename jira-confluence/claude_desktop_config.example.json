@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "jira-confluence": {
+      "command": "node",
+      "args": ["/path/to/mcp-servers/jira-confluence/dist/index.js"],
+      "env": {
+        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
+        "JIRA_USER_EMAIL": "your-email@example.com",
+        "JIRA_API_TOKEN": "your-jira-api-token",
+        "CONFLUENCE_BASE_URL": "https://your-domain.atlassian.net",
+        "CONFLUENCE_USER_EMAIL": "your-email@example.com",
+        "CONFLUENCE_API_TOKEN": "your-confluence-api-token",
+        "LOG_LEVEL": "info"
+      }
+    }
+  }
+}
