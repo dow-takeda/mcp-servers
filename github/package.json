@@ -29,7 +29,7 @@
     "dotenv": "^16.4.7"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
+    "@eslint/js": "^10.0.1",
     "@secretlint/secretlint-rule-preset-recommend": "^8.4.0",
     "@types/node": "^25.5.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
