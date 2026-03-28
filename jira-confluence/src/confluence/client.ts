@@ -12,9 +12,9 @@ export class ConfluenceClient {
     this.client = axios.create({
       baseURL: `${config.baseUrl}/wiki/api/v2`,
       headers: {
-        'Authorization': authHeader,
+        Authorization: authHeader,
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
       timeout: 30000, // 30 seconds
     });
@@ -83,11 +83,7 @@ export class ConfluenceClient {
   /**
    * Search for pages
    */
-  async searchPages(params: {
-    title?: string;
-    spaceKey?: string;
-    limit?: number;
-  }): Promise<any> {
+  async searchPages(params: { title?: string; spaceKey?: string; limit?: number }): Promise<any> {
     try {
       logger.debug('Searching Confluence pages', params);
       const queryParams: any = {

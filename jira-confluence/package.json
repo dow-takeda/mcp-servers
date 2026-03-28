@@ -9,7 +9,16 @@
     "watch": "tsc --watch",
     "start": "node dist/index.js",
     "dev": "tsc && node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/",
+    "secretlint": "secretlint \"src/**/*\"",
+    "audit": "npm audit --audit-level=high",
+    "prepare": "cd .. && git config core.hooksPath .husky"
   },
   "keywords": [
     "mcp",
@@ -27,8 +36,20 @@
     "dotenv": "^16.4.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.4.0",
     "@types/node": "^20.11.0",
-    "typescript": "^5.3.0"
+    "@typescript-eslint/eslint-plugin": "^8.57.2",
+    "@typescript-eslint/parser": "^8.57.2",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.1",
+    "secretlint": "^11.4.0",
+    "typescript": "^5.3.0",
+    "vitest": "^4.1.2"
   },
   "engines": {
     "node": ">=18.0.0"

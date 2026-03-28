@@ -12,9 +12,9 @@ export class JiraClient {
     this.client = axios.create({
       baseURL: `${config.baseUrl}/rest/api/3`,
       headers: {
-        'Authorization': authHeader,
+        Authorization: authHeader,
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
       timeout: 30000, // 30 seconds
     });

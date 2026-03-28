@@ -26,7 +26,8 @@ const tools: Tool[] = [
   // JIRA Tools
   {
     name: 'jira_search_issues',
-    description: 'Search for JIRA issues using JQL (JIRA Query Language). Returns a list of issues matching the query.',
+    description:
+      'Search for JIRA issues using JQL (JIRA Query Language). Returns a list of issues matching the query.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -290,10 +291,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     switch (name) {
       // JIRA tool handlers
       case 'jira_search_issues': {
-        const result = await jiraClient.searchIssues(
-          args.jql as string,
-          args.maxResults as number
-        );
+        const result = await jiraClient.searchIssues(args.jql as string, args.maxResults as number);
         return {
           content: [
             {
@@ -329,10 +327,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'jira_add_comment': {
-        const result = await jiraClient.addComment(
-          args.issueKey as string,
-          args.comment as string
-        );
+        const result = await jiraClient.addComment(args.issueKey as string, args.comment as string);
         return {
           content: [
             {
@@ -356,10 +351,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'jira_transition_issue': {
-        await jiraClient.transitionIssue(
-          args.issueKey as string,
-          args.transitionId as string
-        );
+        await jiraClient.transitionIssue(args.issueKey as string, args.transitionId as string);
         return {
           content: [
             {
@@ -420,10 +412,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'confluence_update_page': {
-        const result = await confluenceClient.updatePage(
-          args.pageId as string,
-          args as any
-        );
+        const result = await confluenceClient.updatePage(args.pageId as string, args as any);
         return {
           content: [
             {
