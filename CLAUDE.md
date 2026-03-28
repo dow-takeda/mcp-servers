@@ -27,6 +27,20 @@ npm start
 
 # Watch mode for development
 npm run watch
+
+# Linting and formatting
+npm run lint          # Check for lint errors
+npm run lint:fix      # Auto-fix lint errors
+npm run format        # Format code with Prettier
+
+# Testing
+npm test              # Run tests
+npm run test:watch    # Watch mode
+npm run test:coverage # With coverage report
+
+# Security
+npm run secretlint    # Scan for secrets
+npm run audit         # Check for vulnerabilities
 ```
 
 ## Architecture
