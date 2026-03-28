@@ -2,3 +2,6 @@
 
 # Run lint-staged in jira-confluence directory
 cd jira-confluence && npx lint-staged
+
+# Run lint-staged in github directory
+cd ../github && npx lint-staged
