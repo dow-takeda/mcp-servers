@@ -92,3 +92,8 @@ $RECYCLE.BIN/
 *.key
 secrets/
 credentials/
+
+# ============================================
+# MCP Configuration (contains tokens)
+# ============================================
+.mcp.json
