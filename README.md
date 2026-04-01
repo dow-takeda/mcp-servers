@@ -80,3 +80,19 @@ Claude Codeでも同様の設定で各MCPサーバーを利用できます。
 - 各サービスのAPI認証情報は `.env` ファイルで管理し、リポジトリにコミットしないこと
 - APIレート制限に注意して使用すること
 - 適切な権限管理を行うこと
+
+## Development Flow
+
+**This flow MUST be strictly followed.** When receiving a modification request from the user, follow these steps:
+
+1. **Receive Request**: Receive the request from the user (text or file path). If a file path is provided, read the file.
+2. **Create Plan**: Enter Plan mode and create an implementation plan for user approval.
+3. **Create Issue**: After user approval, create a GitHub Issue.
+4. **Create Branch**: Create a feature branch. Naming convention: `feature/{issue_number}-{summary_2_5_words_snake_case}`
+5. **Implement**: Make the modifications. Ensure unit tests are sufficient (add if needed).
+6. **Local Validation**: Run `make check` (lint, security check, unit tests). Fix any issues and re-run.
+7. **Commit**: After all checks pass, commit. Prefix commit message with `#{issue_number}`.
+8. **Push & Create PR**: Push to GitHub and create a Pull Request. Report to the user.
+9. **Review Response**:
+   - If user **rejects** the PR: Comment the rejection reason on the Issue and restart from step 5.
+   - If user **approves** the PR: Add a summary comment to the Issue and close it.

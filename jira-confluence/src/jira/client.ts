@@ -82,7 +82,7 @@ export class JiraClient {
         params.fields = fields.join(',');
       }
 
-      const response = await this.client.get('/search', { params });
+      const response = await this.client.get('/search/jql', { params });
       logger.info(`Found ${response.data.total} issues`);
       return response.data;
     } catch (error) {
