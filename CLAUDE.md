@@ -10,6 +10,7 @@ This repository contains Model Context Protocol (MCP) servers that enable Claude
 
 - **jira-confluence**: JIRA/Confluence integration (Atlassian Cloud APIs)
 - **github**: GitHub integration (GitHub REST API)
+- **gitlab**: GitLab integration (GitLab REST API v4)
 
 ## Build and Development Commands
 
@@ -69,6 +70,34 @@ npm run test:coverage # With coverage report
 npm run secretlint    # Scan for secrets
 ```
 
+### gitlab server
+
+```bash
+cd gitlab
+
+# Install dependencies
+npm install
+
+# Build TypeScript
+npm run build
+
+# Start compiled server
+npm start
+
+# Linting and formatting
+npm run lint          # Check for lint errors
+npm run lint:fix      # Auto-fix lint errors
+npm run format        # Format code with Prettier
+
+# Testing
+npm test              # Run tests
+npm run test:watch    # Watch mode
+npm run test:coverage # With coverage report
+
+# Security
+npm run secretlint    # Scan for secrets
+```
+
 ## Architecture
 
 ### MCP Server Structure
@@ -105,6 +134,11 @@ Each server follows the same structure:
 - Bearer token authentication with Personal Access Token
 - Rate limit: 5,000 requests/hour (authenticated)
 
+**GitLab:**
+- Uses REST API v4: `https://gitlab.com/api/v4/`
+- PRIVATE-TOKEN header authentication with Personal Access Token
+- Rate limit: 2,000 requests/minute (authenticated)
+
 ## Environment Configuration
 
 ### jira-confluence
@@ -119,6 +153,13 @@ Required environment variables (see `jira-confluence/.env.example`):
 Required environment variables (see `github/.env.example`):
 - `GITHUB_TOKEN` - GitHub Personal Access Token
 - `GITHUB_API_URL` (optional, for GitHub Enterprise)
+- `LOG_LEVEL` (optional, defaults to 'info')
+
+### gitlab
+
+Required environment variables (see `gitlab/.env.example`):
+- `GITLAB_TOKEN` - GitLab Personal Access Token
+- `GITLAB_API_URL` (optional, defaults to `https://gitlab.com/api/v4`)
 - `LOG_LEVEL` (optional, defaults to 'info')
 
 ## Claude Desktop/Code Integration
@@ -145,6 +186,13 @@ Add to `claude_desktop_config.json`:
       "args": ["/path/to/mcp-servers/github/dist/index.js"],
       "env": {
         "GITHUB_TOKEN": "ghp_xxxxxxxxxxxx"
+      }
+    },
+    "gitlab": {
+      "command": "node",
+      "args": ["/path/to/mcp-servers/gitlab/dist/index.js"],
+      "env": {
+        "GITLAB_TOKEN": "glpat-xxxxxxxxxxxx"
       }
     }
   }

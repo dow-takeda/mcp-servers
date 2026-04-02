@@ -20,11 +20,12 @@ MCPは、AnthropicによるAIアシスタントと外部システムを接続す
 ### 実装済み
 
 - [JIRA/Confluence](./jira-confluence/) - アトラシアンの課題管理・ドキュメント管理ツール
+- [GitHub](./github/) - GitHubリポジトリ・Issue・PR管理
+- [GitLab](./gitlab/) - GitLabプロジェクト・Issue・MR管理
 
 ### 今後の予定
 
 - Slack
-- GitHub
 - Notion
 - Google Workspace (Drive, Sheets, Docs)
 - その他の社内ツール
@@ -34,11 +35,12 @@ MCPは、AnthropicによるAIアシスタントと外部システムを接続す
 ```
 mcp-servers/
 ├── README.md                    # このファイル
+├── CLAUDE.md                    # Claude Code用ガイダンス
+├── Makefile                     # ビルド・テストコマンド
 ├── jira-confluence/             # JIRA/Confluence連携サーバー
-│   ├── README.md               # 詳細な作業計画書
-│   ├── src/                    # ソースコード
-│   └── ...
-└── (future-services)/          # 今後追加される他のサービス連携
+├── github/                      # GitHub連携サーバー
+├── gitlab/                      # GitLab連携サーバー
+└── .github/                     # CI/CD・Dependabot設定
 ```
 
 ## セットアップ
