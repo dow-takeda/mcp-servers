@@ -355,6 +355,30 @@ export class GitLabClient {
     return response.data;
   }
 
+  async listIssueNotes(
+    projectId: string | number,
+    issueIid: number,
+    params: {
+      sort?: 'asc' | 'desc';
+      order_by?: 'created_at' | 'updated_at';
+      per_page?: number;
+      page?: number;
+    } = {}
+  ): Promise<Note[]> {
+    const response = await this.client.get<Note[]>(
+      `/projects/${this.encodeProjectId(projectId)}/issues/${issueIid}/notes`,
+      { params }
+    );
+    return response.data;
+  }
+
+  async getIssueNote(projectId: string | number, issueIid: number, noteId: number): Promise<Note> {
+    const response = await this.client.get<Note>(
+      `/projects/${this.encodeProjectId(projectId)}/issues/${issueIid}/notes/${noteId}`
+    );
+    return response.data;
+  }
+
   // ==================== Merge Request Operations ====================
 
   async listMergeRequests(
@@ -429,6 +453,30 @@ export class GitLabClient {
     const response = await this.client.post<Note>(
       `/projects/${this.encodeProjectId(projectId)}/merge_requests/${mrIid}/notes`,
       { body }
+    );
+    return response.data;
+  }
+
+  async listMRNotes(
+    projectId: string | number,
+    mrIid: number,
+    params: {
+      sort?: 'asc' | 'desc';
+      order_by?: 'created_at' | 'updated_at';
+      per_page?: number;
+      page?: number;
+    } = {}
+  ): Promise<Note[]> {
+    const response = await this.client.get<Note[]>(
+      `/projects/${this.encodeProjectId(projectId)}/merge_requests/${mrIid}/notes`,
+      { params }
+    );
+    return response.data;
+  }
+
+  async getMRNote(projectId: string | number, mrIid: number, noteId: number): Promise<Note> {
+    const response = await this.client.get<Note>(
+      `/projects/${this.encodeProjectId(projectId)}/merge_requests/${mrIid}/notes/${noteId}`
     );
     return response.data;
   }
