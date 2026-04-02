@@ -70,7 +70,82 @@ mcp-servers/
 
 ### Claude Code (CLI) での使用
 
-Claude Codeでも同様の設定で各MCPサーバーを利用できます。
+Claude Code では `claude mcp add` コマンドでMCPサーバーを登録できます。
+
+#### 基本構文
+
+```bash
+# ローカルサーバー（stdio トランスポート）
+claude mcp add --transport stdio <サーバー名> [オプション] -- <コマンド> [引数...]
+
+# リモートサーバー（http トランスポート）
+claude mcp add --transport http <サーバー名> <URL> [オプション]
+```
+
+#### 主要オプション
+
+| オプション | 説明 | 例 |
+|-----------|------|-----|
+| `--transport` | トランスポート種別: `stdio`, `http`, `sse` | `--transport stdio` |
+| `--scope` | 保存先: `local`(デフォルト), `project`, `user` | `--scope project` |
+| `--env KEY=value` | 環境変数を設定（複数指定可） | `--env API_KEY=xxx` |
+| `--header` | HTTPヘッダー追加（複数指定可） | `--header "Authorization: Bearer xxx"` |
+
+#### スコープの違い
+
+| スコープ | 保存先 | 共有範囲 | Git管理 |
+|---------|--------|---------|---------|
+| `local` | `~/.claude.json` | 自分のみ（このプロジェクト） | No |
+| `project` | `.mcp.json` | チーム全員 | Yes |
+| `user` | `~/.claude.json` | 自分のみ（全プロジェクト） | No |
+
+#### 登録例
+
+```bash
+# JIRA/Confluence サーバーを登録（個人用）
+claude mcp add --transport stdio jira-confluence \
+  --env JIRA_BASE_URL=https://your-domain.atlassian.net \
+  --env JIRA_USER_EMAIL=your-email@example.com \
+  --env JIRA_API_TOKEN=your-api-token \
+  --env CONFLUENCE_BASE_URL=https://your-domain.atlassian.net \
+  --env CONFLUENCE_USER_EMAIL=your-email@example.com \
+  --env CONFLUENCE_API_TOKEN=your-api-token \
+  -- node /path/to/mcp-servers/jira-confluence/dist/index.js
+
+# GitHub サーバーを登録（個人用）
+claude mcp add --transport stdio github \
+  --env GITHUB_TOKEN=ghp_xxxxxxxxxxxx \
+  -- node /path/to/mcp-servers/github/dist/index.js
+
+# GitLab サーバーを登録（個人用）
+claude mcp add --transport stdio gitlab \
+  --env GITLAB_TOKEN=glpat-xxxxxxxxxxxx \
+  -- node /path/to/mcp-servers/gitlab/dist/index.js
+
+# チーム共有用に .mcp.json へ登録
+claude mcp add --transport stdio gitlab --scope project \
+  -- node ./gitlab/dist/index.js
+```
+
+#### 関連コマンド
+
+```bash
+# 登録済みサーバー一覧
+claude mcp list
+
+# サーバー詳細表示
+claude mcp get <サーバー名>
+
+# サーバー削除
+claude mcp remove <サーバー名>
+
+# JSON形式で直接追加
+claude mcp add-json <サーバー名> '<JSON設定>'
+```
+
+#### Claude Code 内での管理
+
+Claude Code 起動後、`/mcp` コマンドで接続中のMCPサーバーの状態確認・OAuth認証が可能です。
 
 ## 参考リンク
 
