@@ -195,6 +195,44 @@ const tools: Tool[] = [
       required: ['owner', 'repo', 'issue_number', 'body'],
     },
   },
+  {
+    name: 'github_list_issue_comments',
+    description: 'List comments on an issue',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        owner: { type: 'string', description: 'Repository owner' },
+        repo: { type: 'string', description: 'Repository name' },
+        issue_number: { type: 'number', description: 'Issue number' },
+        sort: {
+          type: 'string',
+          enum: ['created', 'updated'],
+          description: 'Sort field',
+        },
+        direction: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
+        since: {
+          type: 'string',
+          description: 'Only return comments updated after this ISO 8601 timestamp',
+        },
+        per_page: { type: 'number', description: 'Results per page (max 100)' },
+        page: { type: 'number', description: 'Page number' },
+      },
+      required: ['owner', 'repo', 'issue_number'],
+    },
+  },
+  {
+    name: 'github_get_issue_comment',
+    description: 'Get a specific comment on an issue',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        owner: { type: 'string', description: 'Repository owner' },
+        repo: { type: 'string', description: 'Repository name' },
+        comment_id: { type: 'number', description: 'Comment ID' },
+      },
+      required: ['owner', 'repo', 'comment_id'],
+    },
+  },
 
   // Pull Request Tools
   {
@@ -301,6 +339,44 @@ const tools: Tool[] = [
         body: { type: 'string', description: 'Comment body' },
       },
       required: ['owner', 'repo', 'pull_number', 'body'],
+    },
+  },
+  {
+    name: 'github_list_pr_comments',
+    description: 'List comments on a pull request',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        owner: { type: 'string', description: 'Repository owner' },
+        repo: { type: 'string', description: 'Repository name' },
+        pull_number: { type: 'number', description: 'Pull request number' },
+        sort: {
+          type: 'string',
+          enum: ['created', 'updated'],
+          description: 'Sort field',
+        },
+        direction: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
+        since: {
+          type: 'string',
+          description: 'Only return comments updated after this ISO 8601 timestamp',
+        },
+        per_page: { type: 'number', description: 'Results per page (max 100)' },
+        page: { type: 'number', description: 'Page number' },
+      },
+      required: ['owner', 'repo', 'pull_number'],
+    },
+  },
+  {
+    name: 'github_get_pr_comment',
+    description: 'Get a specific comment on a pull request',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        owner: { type: 'string', description: 'Repository owner' },
+        repo: { type: 'string', description: 'Repository name' },
+        comment_id: { type: 'number', description: 'Comment ID' },
+      },
+      required: ['owner', 'repo', 'comment_id'],
     },
   },
 
@@ -564,6 +640,27 @@ async function handleToolCall(name: string, args: ToolArgs): Promise<unknown> {
           args.body as string
         );
 
+      case 'github_list_issue_comments':
+        return await github.listIssueComments(
+          args.owner as string,
+          args.repo as string,
+          args.issue_number as number,
+          {
+            sort: args.sort as 'created' | 'updated',
+            direction: args.direction as 'asc' | 'desc',
+            since: args.since as string,
+            per_page: args.per_page as number,
+            page: args.page as number,
+          }
+        );
+
+      case 'github_get_issue_comment':
+        return await github.getIssueComment(
+          args.owner as string,
+          args.repo as string,
+          args.comment_id as number
+        );
+
       // Pull request operations
       case 'github_list_pull_requests':
         return await github.listPullRequests(args.owner as string, args.repo as string, {
@@ -621,6 +718,27 @@ async function handleToolCall(name: string, args: ToolArgs): Promise<unknown> {
           args.repo as string,
           args.pull_number as number,
           args.body as string
+        );
+
+      case 'github_list_pr_comments':
+        return await github.listPRComments(
+          args.owner as string,
+          args.repo as string,
+          args.pull_number as number,
+          {
+            sort: args.sort as 'created' | 'updated',
+            direction: args.direction as 'asc' | 'desc',
+            since: args.since as string,
+            per_page: args.per_page as number,
+            page: args.page as number,
+          }
+        );
+
+      case 'github_get_pr_comment':
+        return await github.getPRComment(
+          args.owner as string,
+          args.repo as string,
+          args.comment_id as number
         );
 
       // File operations

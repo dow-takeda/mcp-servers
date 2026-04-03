@@ -214,6 +214,45 @@ const tools: Tool[] = [
       required: ['project_id', 'issue_iid', 'body'],
     },
   },
+  {
+    name: 'gitlab_list_issue_notes',
+    description: 'List comments (notes) on an issue',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: ['string', 'number'],
+          description: 'Project ID or URL-encoded path',
+        },
+        issue_iid: { type: 'number', description: 'Issue internal ID (IID)' },
+        sort: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
+        order_by: {
+          type: 'string',
+          enum: ['created_at', 'updated_at'],
+          description: 'Order by field',
+        },
+        per_page: { type: 'number', description: 'Results per page (max 100)' },
+        page: { type: 'number', description: 'Page number' },
+      },
+      required: ['project_id', 'issue_iid'],
+    },
+  },
+  {
+    name: 'gitlab_get_issue_note',
+    description: 'Get a specific comment (note) on an issue',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: ['string', 'number'],
+          description: 'Project ID or URL-encoded path',
+        },
+        issue_iid: { type: 'number', description: 'Issue internal ID (IID)' },
+        note_id: { type: 'number', description: 'Note ID' },
+      },
+      required: ['project_id', 'issue_iid', 'note_id'],
+    },
+  },
 
   // Merge Request Tools
   {
@@ -338,6 +377,45 @@ const tools: Tool[] = [
         body: { type: 'string', description: 'Comment body' },
       },
       required: ['project_id', 'mr_iid', 'body'],
+    },
+  },
+  {
+    name: 'gitlab_list_mr_notes',
+    description: 'List comments (notes) on a merge request',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: ['string', 'number'],
+          description: 'Project ID or URL-encoded path',
+        },
+        mr_iid: { type: 'number', description: 'Merge request internal ID (IID)' },
+        sort: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
+        order_by: {
+          type: 'string',
+          enum: ['created_at', 'updated_at'],
+          description: 'Order by field',
+        },
+        per_page: { type: 'number', description: 'Results per page (max 100)' },
+        page: { type: 'number', description: 'Page number' },
+      },
+      required: ['project_id', 'mr_iid'],
+    },
+  },
+  {
+    name: 'gitlab_get_mr_note',
+    description: 'Get a specific comment (note) on a merge request',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: ['string', 'number'],
+          description: 'Project ID or URL-encoded path',
+        },
+        mr_iid: { type: 'number', description: 'Merge request internal ID (IID)' },
+        note_id: { type: 'number', description: 'Note ID' },
+      },
+      required: ['project_id', 'mr_iid', 'note_id'],
     },
   },
 
@@ -689,6 +767,25 @@ async function handleToolCall(name: string, args: ToolArgs): Promise<unknown> {
           args.body as string
         );
 
+      case 'gitlab_list_issue_notes':
+        return await gitlab.listIssueNotes(
+          args.project_id as string | number,
+          args.issue_iid as number,
+          {
+            sort: args.sort as 'asc' | 'desc',
+            order_by: args.order_by as 'created_at' | 'updated_at',
+            per_page: args.per_page as number,
+            page: args.page as number,
+          }
+        );
+
+      case 'gitlab_get_issue_note':
+        return await gitlab.getIssueNote(
+          args.project_id as string | number,
+          args.issue_iid as number,
+          args.note_id as number
+        );
+
       // Merge request operations
       case 'gitlab_list_merge_requests':
         return await gitlab.listMergeRequests(args.project_id as string | number, {
@@ -740,6 +837,21 @@ async function handleToolCall(name: string, args: ToolArgs): Promise<unknown> {
           args.project_id as string | number,
           args.mr_iid as number,
           args.body as string
+        );
+
+      case 'gitlab_list_mr_notes':
+        return await gitlab.listMRNotes(args.project_id as string | number, args.mr_iid as number, {
+          sort: args.sort as 'asc' | 'desc',
+          order_by: args.order_by as 'created_at' | 'updated_at',
+          per_page: args.per_page as number,
+          page: args.page as number,
+        });
+
+      case 'gitlab_get_mr_note':
+        return await gitlab.getMRNote(
+          args.project_id as string | number,
+          args.mr_iid as number,
+          args.note_id as number
         );
 
       // File operations

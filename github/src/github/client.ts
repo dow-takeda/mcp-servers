@@ -303,6 +303,32 @@ export class GitHubClient {
     return response.data;
   }
 
+  async listIssueComments(
+    owner: string,
+    repo: string,
+    issueNumber: number,
+    params: {
+      sort?: 'created' | 'updated';
+      direction?: 'asc' | 'desc';
+      since?: string;
+      per_page?: number;
+      page?: number;
+    } = {}
+  ): Promise<Comment[]> {
+    const response = await this.client.get<Comment[]>(
+      `/repos/${owner}/${repo}/issues/${issueNumber}/comments`,
+      { params }
+    );
+    return response.data;
+  }
+
+  async getIssueComment(owner: string, repo: string, commentId: number): Promise<Comment> {
+    const response = await this.client.get<Comment>(
+      `/repos/${owner}/${repo}/issues/comments/${commentId}`
+    );
+    return response.data;
+  }
+
   // ==================== Pull Request Operations ====================
 
   async listPullRequests(
@@ -384,6 +410,27 @@ export class GitHubClient {
   ): Promise<Comment> {
     // PR comments use the issues endpoint
     return this.addIssueComment(owner, repo, pullNumber, body);
+  }
+
+  async listPRComments(
+    owner: string,
+    repo: string,
+    pullNumber: number,
+    params: {
+      sort?: 'created' | 'updated';
+      direction?: 'asc' | 'desc';
+      since?: string;
+      per_page?: number;
+      page?: number;
+    } = {}
+  ): Promise<Comment[]> {
+    // PR comments use the issues endpoint
+    return this.listIssueComments(owner, repo, pullNumber, params);
+  }
+
+  async getPRComment(owner: string, repo: string, commentId: number): Promise<Comment> {
+    // PR comments use the issues endpoint
+    return this.getIssueComment(owner, repo, commentId);
   }
 
   // ==================== File Operations ====================
