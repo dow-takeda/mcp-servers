@@ -220,7 +220,8 @@ When adding a new service integration:
 5. **Implement**: Make the modifications. Ensure unit tests are sufficient (add if needed).
 6. **Local Validation**: Run `make check` (lint, security check, unit tests). Fix any issues and re-run.
 7. **Commit**: After all checks pass, commit. Prefix commit message with `#{issue_number}`.
-8. **Push & Create PR**: Push to GitHub and create a Pull Request. Report to the user.
-9. **Review Response**:
+8. **Build Verification**: Run `npm run build` for each modified server. Verify that changes are reflected in the `dist/` output (e.g., new tools, renamed functions). This step prevents shipping stale build artifacts.
+9. **Push & Create PR**: Push to GitHub and create a Pull Request. Report to the user.
+10. **Review Response**:
    - If user **rejects** the PR: Comment the rejection reason on the Issue and restart from step 5.
    - If user **approves** the PR: Add a summary comment to the Issue and close it.
