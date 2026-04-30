@@ -78,7 +78,8 @@ const tools: Tool[] = [
         },
         description: {
           type: 'string',
-          description: 'Detailed description of the issue',
+          description:
+            'Detailed description of the issue. Markdown is supported (headings, **bold**, *italic*, `code`, lists, code blocks, GFM tables, links, blockquotes, horizontal rules) and is converted to ADF before submission.',
         },
         priority: {
           type: 'string',
@@ -100,7 +101,8 @@ const tools: Tool[] = [
         },
         comment: {
           type: 'string',
-          description: 'Comment text to add',
+          description:
+            'Comment text to add. Markdown is supported (headings, **bold**, *italic*, `code`, lists, code blocks, GFM tables, links, blockquotes, horizontal rules) and is converted to ADF before submission.',
         },
       },
       required: ['issueKey', 'comment'],
@@ -206,7 +208,8 @@ const tools: Tool[] = [
         },
         body: {
           type: 'string',
-          description: 'Page content in Confluence storage format (HTML-like)',
+          description:
+            'Page content as Markdown. Converted to Confluence storage format on submission (headings, **bold**, *italic*, `code`, lists, code blocks rendered via Confluence code macro, GFM tables, links, blockquotes, horizontal rules).',
         },
         parentId: {
           type: 'string',
@@ -232,7 +235,8 @@ const tools: Tool[] = [
         },
         body: {
           type: 'string',
-          description: 'New page content in storage format (optional)',
+          description:
+            'New page content as Markdown (optional). Converted to Confluence storage format on submission (headings, **bold**, *italic*, `code`, lists, code blocks rendered via Confluence code macro, GFM tables, links, blockquotes, horizontal rules).',
         },
         version: {
           type: 'number',

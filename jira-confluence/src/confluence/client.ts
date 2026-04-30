@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ConfluenceConfig } from '../utils/config.js';
 import { generateBasicAuth } from '../utils/auth.js';
 import { logger } from '../utils/logger.js';
+import { markdownToConfluenceStorage } from '../utils/markdown.js';
 
 export class ConfluenceClient {
   private client: AxiosInstance;
@@ -141,7 +142,7 @@ export class ConfluenceClient {
         title: pageData.title,
         body: {
           representation: 'storage',
-          value: pageData.body,
+          value: markdownToConfluenceStorage(pageData.body),
         },
       };
 
@@ -186,7 +187,7 @@ export class ConfluenceClient {
       if (updateData.body) {
         payload.body = {
           representation: 'storage',
-          value: updateData.body,
+          value: markdownToConfluenceStorage(updateData.body),
         };
       }
 
