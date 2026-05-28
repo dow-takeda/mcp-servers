@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosError } from 'axios';
 import { JiraConfig } from '../utils/config.js';
 import { generateBasicAuth } from '../utils/auth.js';
 import { logger } from '../utils/logger.js';
+import { markdownToAdf } from '../utils/markdown.js';
 
 export class JiraClient {
   private client: AxiosInstance;
@@ -135,21 +136,7 @@ export class JiraClient {
       };
 
       if (issueData.description) {
-        fields.description = {
-          type: 'doc',
-          version: 1,
-          content: [
-            {
-              type: 'paragraph',
-              content: [
-                {
-                  type: 'text',
-                  text: issueData.description,
-                },
-              ],
-            },
-          ],
-        };
+        fields.description = markdownToAdf(issueData.description);
       }
 
       if (issueData.priority) {
@@ -193,21 +180,7 @@ export class JiraClient {
       logger.debug(`Adding comment to issue: ${issueKey}`);
 
       const body = {
-        body: {
-          type: 'doc',
-          version: 1,
-          content: [
-            {
-              type: 'paragraph',
-              content: [
-                {
-                  type: 'text',
-                  text: comment,
-                },
-              ],
-            },
-          ],
-        },
+        body: markdownToAdf(comment),
       };
 
       const response = await this.client.post(`/issue/${issueKey}/comment`, body);
